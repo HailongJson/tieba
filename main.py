@@ -42,8 +42,8 @@ SIGN_KEY = 'tiebaclient!!!'
 UTF8 = "utf-8"
 SIGN = "sign"
 KW = "kw"
-START = {text:'AutoSignStart'}
-END = {text:'AutoSignEnd'}
+START = {'text':'AutoSignStart'}
+END = {'text':'AutoSignEnd'}
 
 s = requests.Session()
 
