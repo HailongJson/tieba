@@ -13,6 +13,7 @@ logger = logging.getLogger(__name__)
 LIKIE_URL = "http://c.tieba.baidu.com/c/f/forum/like"
 TBS_URL = "http://tieba.baidu.com/dc/common/tbs"
 SIGN_URL = "http://c.tieba.baidu.com/c/c/forum/sign"
+SD_URL = "https://sc.ftqq.com/"
 
 HEADERS = {
     'Host': 'tieba.baidu.com',
@@ -169,6 +170,7 @@ def client_sign(bduss, tbs, fid, kw):
 
 def main():
     b = os.environ['BDUSS'].split('#')
+    k = os.environ['SDKEY']
     for n, i in enumerate(b):
         logger.info("开始签到第" + str(n+1) + "个用户")
         tbs = get_tbs(i)
@@ -177,6 +179,7 @@ def main():
             client_sign(i, tbs, j["id"], j["name"])
         logger.info("完成第" + str(n+1) + "个用户签到")
     logger.info("所有用户签到结束")
+    s.post(url = SD_URL + k, text = 'AutoSign', desp = 'AutoSign').json()
 
 
 if __name__ == '__main__':
