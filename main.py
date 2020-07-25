@@ -160,9 +160,9 @@ def encodeData(data):
     return data
 
 
-def client_sign(bduss, tbs, fid, kw):
+def client_sign(index, bduss, tbs, fid, kw):
     # 客户端签到
-    logger.info("开始签到贴吧：" + kw)
+    logger.info("开始签到第"+index+"个贴吧：" + kw)
     data = copy.copy(SIGN_DATA)
     data.update({BDUSS: bduss, FID: fid, KW: kw, TBS: tbs, TIMESTAMP: str(int(time.time()))})
     data = encodeData(data)
@@ -171,16 +171,18 @@ def client_sign(bduss, tbs, fid, kw):
 
 
 def main():
+    # 开始签到通知
     s.post(url = SD_URL, data = START, timeout=5).json()
     b = os.environ['BDUSS'].split('#')
     for n, i in enumerate(b):
         logger.info("开始签到第" + str(n+1) + "个用户")
         tbs = get_tbs(i)
         favorites = get_favorite(i)
-        for j in favorites:
-            client_sign(i, tbs, j["id"], j["name"])
+        for m, j in favorites:
+            client_sign(m, i, tbs, j["id"], j["name"])
         logger.info("完成第" + str(n+1) + "个用户签到")
     logger.info("所有用户签到结束")
+    # 签到结束通知
     s.post(url = SD_URL, data = END, timeout=5).json()
 
 
